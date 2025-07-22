@@ -1,0 +1,42 @@
+import { Box } from "@react-three/drei";
+import { AutomergeUrl, useDocument } from "@automerge/react";
+
+export interface Voxel {
+  position: [number, number, number];
+  color: [number, number, number];
+}
+
+export interface VoxelGrid {
+  voxels: Voxel[];
+}
+
+export function initVoxelGrid(): VoxelGrid {
+  return [
+    {
+      position: [1, 0, 0],
+      color: [1, 0, 0],
+    },
+    {
+      position: [0, 1, 0],
+      color: [0, 1, 0],
+    },
+    {
+      position: [0, 0, 1],
+      color: [0, 0, 1],
+    },
+  ];
+}
+
+export const Voxels: React.FC<{ docUrl: AutomergeUrl }> = ({ docUrl }) => {
+  return (
+    <>
+      {voxelGrid?.map(({ position, color }) => (
+        <group position={position} key={position.join("-")}>
+          <Box args={[1, 1, 1]}>
+            <meshStandardMaterial color={color} />
+          </Box>
+        </group>
+      ))}
+    </>
+  );
+};
