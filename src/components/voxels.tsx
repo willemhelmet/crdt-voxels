@@ -2,7 +2,7 @@ import { AutomergeUrl, useDocument } from "@automerge/react";
 import { Voxel } from "./voxel.tsx";
 
 export interface VoxelData {
-  position: [number, number, number];
+  position: { x: number; y: number; z: number };
   color: string;
 }
 
@@ -19,7 +19,7 @@ export function initVoxelGrid(): VoxelGrid {
   for (let x = 0 - gridSize / 2; x < gridSize - gridSize / 2; x++) {
     for (let z = 0 - gridSize / 2; z < gridSize - gridSize / 2; z++) {
       voxels.push({
-        position: [x + 1, -1, z + 1],
+        position: { x: x + 1, y: -1, z: z + 1 },
         color: color,
       });
     }

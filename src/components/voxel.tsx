@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useStore } from "../store.ts";
 
 export const Voxel = ({ position, color, name, docUrl }) => {
-  const [newVoxelPos, setNewVoxelPos] = useState([0, 0, 0]);
+  const [newVoxelPos, setNewVoxelPos] = useState({ x: 0, y: 0, z: 0 });
   const [ghostOffset, setGhostOffset] = useState([0, 0, 0]);
   const [showGhost, setShowGhost] = useState(false);
   const storeColor = useStore((state) => state.color);
@@ -35,11 +35,11 @@ export const Voxel = ({ position, color, name, docUrl }) => {
     // For creating the new voxel on click
     // `position` is the position of the group, which is the world position of this voxel.
     const newPos = {
-      x: norm.x + position[0],
-      y: norm.y + position[1],
-      z: norm.z + position[2],
+      x: norm.x + position.x,
+      y: norm.y + position.y,
+      z: norm.z + position.z,
     };
-    setNewVoxelPos([newPos.x, newPos.y, newPos.z]);
+    setNewVoxelPos(newPos);
   }
 
   function onPointerOut(e) {
@@ -48,7 +48,7 @@ export const Voxel = ({ position, color, name, docUrl }) => {
   }
 
   return (
-    <group position={position}>
+    <group position={[position.x, position.y, position.z]}>
       <Box
         args={[1, 1, 1]}
         onPointerDown={onClick}
