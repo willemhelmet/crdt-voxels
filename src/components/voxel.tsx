@@ -13,15 +13,31 @@ export const Voxel = ({ position, color, name, docUrl }) => {
     // only renderes once the document is loaded
     suspense: true,
   });
+  const mode = useStore((state) => state.mode);
 
   function onClick(e) {
     e.stopPropagation();
-    changeDoc((d) =>
-      d.voxels.push({
-        position: newVoxelPos,
-        color: storeColor,
-      }),
-    );
+    if (mode === "add") {
+      changeDoc((d) =>
+        d.voxels.push({
+          position: newVoxelPos,
+          color: storeColor,
+        }),
+      );
+    } else {
+      const position = e.object.parent.position;
+      changeDoc((d) => {
+        const indexToRemove = d.voxels.findIndex(
+          (v) =>
+            v.position.x === position.x &&
+            v.position.y === position.y &&
+            v.position.z === position.z,
+        );
+        if (indexToRemove !== -1) {
+          d.voxels.splice(indexToRemove, 1);
+        }
+      });
+    }
   }
 
   function onHover(e) {
@@ -60,10 +76,11 @@ export const Voxel = ({ position, color, name, docUrl }) => {
       >
         <meshStandardMaterial color={color} />
       </Box>
-      {showGhost && (
-        <Box position={ghostOffset} args={[1, 1, 1]}>
+      {showGhost && mode == "add" && (
+        <mesh position={ghostOffset}>
+          <boxGeometry args={[1, 1, 1]} />
           <meshStandardMaterial color="white" transparent opacity={0.3} />
-        </Box>
+        </mesh>
       )}
     </group>
   );
