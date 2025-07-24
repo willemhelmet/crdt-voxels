@@ -37,10 +37,8 @@ if (isValidAutomergeUrl(locationHash)) {
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Suspense>
-      <RepoContext.Provider value={repo}>
-        <App docUrl={window.handle.url} />
-      </RepoContext.Provider>
-    </Suspense>
+    <RepoContext.Provider value={repo}>
+      <App docUrl={window.handle.url} />
+    </RepoContext.Provider>
   </StrictMode>,
 );

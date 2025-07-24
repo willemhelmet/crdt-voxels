@@ -1,9 +1,9 @@
-import { Box } from "@react-three/drei";
 import { AutomergeUrl, useDocument } from "@automerge/react";
+import { Voxel } from "./voxel.tsx";
 
 export interface VoxelData {
   position: [number, number, number];
-  color: [number, number, number];
+  color: string;
 }
 
 export interface VoxelGrid {
@@ -11,40 +11,41 @@ export interface VoxelGrid {
 }
 
 export function initVoxelGrid(): VoxelGrid {
-  return {
-    voxels: [
-      {
-        position: [1, 0, 0],
-        color: [1, 0, 0],
-      },
-      {
-        position: [0, 1, 0],
-        color: [0, 1, 0],
-      },
-      {
-        position: [0, 0, 1],
-        color: [0, 0, 1],
-      },
-    ],
-  };
+  const voxels: VoxelData[] = [];
+  const gridSize = 10;
+  // The color is dark-grey, matching the plane in App.tsx (#404040)
+  const color = "#404040";
+
+  for (let x = 0 - gridSize / 2; x < gridSize - gridSize / 2; x++) {
+    for (let z = 0 - gridSize / 2; z < gridSize - gridSize / 2; z++) {
+      voxels.push({
+        position: [x + 1, -1, z + 1],
+        color: color,
+      });
+    }
+  }
+
+  return { voxels };
 }
 
 export const Voxels: React.FC<{ docUrl: AutomergeUrl }> = ({ docUrl }) => {
-  const [doc, changeDoc] = useDocument(docUrl, {
+  const [doc] = useDocument(docUrl, {
     // This hooks the `useDocument` into reacts suspense infrastructure so the whole component
     // only renderes once the document is loaded
     suspense: true,
   });
-  console.log(doc);
+
   return (
     <>
       {doc &&
-        doc.voxels?.map(({ position, color }) => (
-          <group position={position} key={position.join("-")}>
-            <Box args={[1, 1, 1]}>
-              <meshStandardMaterial color={color} />
-            </Box>
-          </group>
+        doc.voxels?.map(({ position, color }, index) => (
+          <Voxel
+            position={position}
+            color={color}
+            key={index}
+            name={`box-${index}`}
+            docUrl={docUrl}
+          />
         ))}
     </>
   );
