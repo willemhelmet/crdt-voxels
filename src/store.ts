@@ -6,24 +6,20 @@ interface AppState {
   color: string;
   selected: Object3D | null;
   selectedIndex: number | null;
-  isTransforming: boolean;
   setMode: (
     mode: "add" | "erase" | "paint" | "dropper" | "select" | "move",
   ) => void;
   setColor: (color: string) => void;
   setSelected: (selected: Object3D | null) => void;
   setSelectedIndex: (selectedIndex: number | null) => void;
-  setIsTransforming: (isTransforming: boolean) => void;
 }
 export const useStore = create<AppState>((set) => ({
   mode: "add",
   color: "#ff0000",
   selected: null,
   selectedIndex: null,
-  isTransforming: false,
   setMode: (mode) => set({ mode }),
   setColor: (color) => set({ color }),
   setSelected: (selected) => set({ selected }),
   setSelectedIndex: (selectedIndex) => set({ selectedIndex }),
-  setIsTransforming: (isTransforming) => set({ isTransforming }),
 }));

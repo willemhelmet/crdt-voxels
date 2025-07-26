@@ -11,6 +11,7 @@ export const Voxel = ({ position, color, name, docUrl }) => {
   const storeColor = useStore((state) => state.color);
   const setColor = useStore((state) => state.setColor);
   const selected = useStore((state) => state.selected);
+  const setSelecterd = useStore((state) => state.setSelected);
   const setSelected = useStore((state) => state.setSelected);
   const setSelectedIndex = useStore((state) => state.setSelectedIndex);
   const ref = useRef<Group>(null!);
@@ -43,7 +44,7 @@ export const Voxel = ({ position, color, name, docUrl }) => {
         if (indexToRemove !== -1) {
           d.voxels.splice(indexToRemove, 1);
           if (selected) {
-            selected = null;
+            setSelected(null);
           }
         }
       });

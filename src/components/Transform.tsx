@@ -39,10 +39,6 @@ export function Transform({ docUrl }) {
     <TransformControls
       object={selected}
       translationSnap={1}
-      onPointerOver={(e: ThreeEvent<PointerEvent>) => {
-        e.stopPropagation();
-        console.log("over");
-      }}
       onMouseDown={mouseDown}
       onMouseUp={mouseUp}
     />
