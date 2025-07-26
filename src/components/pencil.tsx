@@ -6,20 +6,15 @@ export function Pencil() {
   const mode = useStore((state) => state.mode);
   const setMode = useStore((state) => state.setMode);
 
-  function hi() {
-    setMode(mode === "add" ? "erase" : "add");
-  }
   return (
-    <>
-      <div onClick={hi} onMouseEnter={() => console.log("hovering")}>
+    <div onClick={() => setMode("add")}>
+      <div className={`icon-wrapper ${mode === "add" ? "active-icon" : ""}`}>
         {mode === "add" ? (
-          <div className="active-icon">
-            <MaterialSymbolsEditSharp />
-          </div>
+          <MaterialSymbolsEditSharp />
         ) : (
           <MaterialSymbolsEditOutlineSharp />
         )}
       </div>
-    </>
+    </div>
   );
 }

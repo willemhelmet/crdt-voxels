@@ -65,11 +65,14 @@ button:hover {
   background-color: #e0e0e0;
 }
 
-.active-icon {
-  background-color: #888;
-  border-radius: 50%;
+.icon-wrapper {
   padding: 0.5em;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 50%; /* Apply border-radius consistently */
+}
+
+.active-icon {
+  background-color: #888;
 }

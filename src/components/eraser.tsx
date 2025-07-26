@@ -6,19 +6,15 @@ export function Eraser() {
   const mode = useStore((state) => state.mode);
   const setMode = useStore((state) => state.setMode);
 
-  function toggleMode() {
-    setMode(mode === "add" ? "erase" : "add");
-  }
-
   return (
-    <div onClick={toggleMode}>
-      {mode === "erase" ? (
-        <div className="active-icon">
+    <div onClick={() => setMode("erase")}>
+      <div className={`icon-wrapper ${mode === "erase" ? "active-icon" : ""}`}>
+        {mode === "erase" ? (
           <MaterialSymbolsInkEraser />
-        </div>
-      ) : (
-        <MaterialSymbolsInkEraserOutline />
-      )}
+        ) : (
+          <MaterialSymbolsInkEraserOutline />
+        )}
+      </div>
     </div>
   );
 }

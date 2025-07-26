@@ -1,5 +1,6 @@
-import { Environment } from "@react-three/drei";
-export const Lighting = () => {
+import { Environment, Sky } from "@react-three/drei";
+
+export function Lighting() {
   return (
     <>
       <Environment preset={"warehouse"} />
@@ -13,6 +14,7 @@ export const Lighting = () => {
         intensity={Math.PI}
       />
       <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+      <Sky />
     </>
   );
-};
+}

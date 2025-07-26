@@ -1,13 +1,20 @@
 import { Box } from "@react-three/drei";
 import { useDocument } from "@automerge/react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useStore } from "../store.ts";
+import { Group } from "three";
 
 export const Voxel = ({ position, color, name, docUrl }) => {
   const [newVoxelPos, setNewVoxelPos] = useState({ x: 0, y: 0, z: 0 });
   const [ghostOffset, setGhostOffset] = useState([0, 0, 0]);
   const [showGhost, setShowGhost] = useState(false);
   const storeColor = useStore((state) => state.color);
+  const setColor = useStore((state) => state.setColor);
+  const selected = useStore((state) => state.selected);
+  const setSelected = useStore((state) => state.setSelected);
+  const setSelectedIndex = useStore((state) => state.setSelectedIndex);
+  const ref = useRef<Group>(null!);
+
   const [doc, changeDoc] = useDocument(docUrl, {
     // This hooks the `useDocument` into reacts suspense infrastructure so the whole component
     // only renderes once the document is loaded
@@ -24,7 +31,7 @@ export const Voxel = ({ position, color, name, docUrl }) => {
           color: storeColor,
         }),
       );
-    } else {
+    } else if (mode === "erase") {
       const position = e.object.parent.position;
       changeDoc((d) => {
         const indexToRemove = d.voxels.findIndex(
@@ -35,8 +42,39 @@ export const Voxel = ({ position, color, name, docUrl }) => {
         );
         if (indexToRemove !== -1) {
           d.voxels.splice(indexToRemove, 1);
+          if (selected) {
+            selected = null;
+          }
         }
       });
+    } else if (mode === "paint") {
+      const position = e.object.parent.position;
+      changeDoc((d) => {
+        const indexToEdit = d.voxels.findIndex(
+          (v) =>
+            v.position.x === position.x &&
+            v.position.y === position.y &&
+            v.position.z === position.z,
+        );
+        if (indexToEdit !== -1) {
+          d.voxels[indexToEdit].color = storeColor;
+        }
+      });
+    } else if (mode === "dropper") {
+      const hexColor = "#" + e.object.material.color.getHexString();
+      setColor(hexColor);
+    } else if (mode === "select") {
+      setSelected(ref.current);
+      const position = e.object.parent.position;
+      const index = doc.voxels.findIndex(
+        (v) =>
+          v.position.x === position.x &&
+          v.position.y === position.y &&
+          v.position.z === position.z,
+      );
+      setSelectedIndex(index);
+    } else if (mode === "move") {
+      // TODO: Implement move mode logic
     }
   }
 
@@ -64,7 +102,7 @@ export const Voxel = ({ position, color, name, docUrl }) => {
   }
 
   return (
-    <group position={[position.x, position.y, position.z]}>
+    <group ref={ref} position={[position.x, position.y, position.z]}>
       <Box
         args={[1, 1, 1]}
         onPointerDown={onClick}
@@ -74,12 +112,12 @@ export const Voxel = ({ position, color, name, docUrl }) => {
         castShadow
         receiveShadow
       >
-        <meshStandardMaterial color={color} />
+        <meshStandardMaterial metalness={0} roughness={1} color={color} />
       </Box>
       {showGhost && mode == "add" && (
         <mesh position={ghostOffset}>
           <boxGeometry args={[1, 1, 1]} />
-          <meshStandardMaterial color="white" transparent opacity={0.3} />
+          <meshBasicMaterial color="white" transparent opacity={0.3} />
         </mesh>
       )}
     </group>
