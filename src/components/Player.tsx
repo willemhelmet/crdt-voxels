@@ -19,7 +19,7 @@ const Player: React.FC<PlayerProps> = ({ position }) => {
   return (
     <mesh ref={ref}>
       <sphereGeometry args={[0.1, 12, 12]} />
-      <meshStandardMaterial color="royalblue" />
+      <meshBasicMaterial color="royalblue" />
     </mesh>
   );
 };

@@ -10,6 +10,7 @@ import {
   IndexedDBStorageAdapter,
   WebSocketClientAdapter,
 } from "@automerge/react";
+import { VoxelGrid, initVoxelGrid } from "./components/voxels.tsx";
 
 const repo = new Repo({
   network: [new WebSocketClientAdapter("wss://sync.automerge.org")],
@@ -19,12 +20,12 @@ const repo = new Repo({
 const root = document.getElementById("root")!;
 
 async function main() {
-  let handle: DocHandle<any>;
+  let handle: DocHandle<VoxelGrid>;
   const locationHash = document.location.hash.substring(1);
   if (isValidAutomergeUrl(locationHash)) {
     handle = await repo.find(locationHash);
   } else {
-    handle = repo.create();
+    handle = repo.create<VoxelGrid>(initVoxelGrid());
     document.location.hash = handle.url;
   }
 
