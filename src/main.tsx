@@ -10,7 +10,6 @@ import {
   IndexedDBStorageAdapter,
   WebSocketClientAdapter,
 } from "@automerge/react";
-import { io } from "socket.io-client";
 
 const repo = new Repo({
   network: [new WebSocketClientAdapter("wss://sync.automerge.org")],
@@ -28,24 +27,6 @@ async function main() {
     handle = repo.create();
     document.location.hash = handle.url;
   }
-
-  const socket = io("http://localhost:3000");
-
-  socket.on("connect", () => {
-    console.log("Connected to server");
-    socket.emit("join", handle.url);
-  });
-
-  socket.on("update", (positions) => {
-    console.log("Received positions:", positions);
-    // Handle the received positions here
-  });
-
-  setInterval(() => {
-    // Replace with actual position data
-    const position = { x: Math.random(), y: Math.random(), z: Math.random() };
-    socket.emit("position", { room: handle.url, position });
-  }, 1000);
 
   ReactDOM.createRoot(root).render(
     <React.StrictMode>
