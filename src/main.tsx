@@ -1,44 +1,59 @@
-import { StrictMode, Suspense } from "react";
-import { createRoot } from "react-dom/client";
-import "./index.css";
+import React from "react";
+import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
+import "./index.css";
 import {
   DocHandle,
-  IndexedDBStorageAdapter,
-  isValidAutomergeUrl,
   Repo,
+  isValidAutomergeUrl,
   RepoContext,
+  IndexedDBStorageAdapter,
   WebSocketClientAdapter,
 } from "@automerge/react";
-import { VoxelGrid, initVoxelGrid } from "./components/voxels.tsx";
+import { io } from "socket.io-client";
 
 const repo = new Repo({
   network: [new WebSocketClientAdapter("wss://sync.automerge.org")],
   storage: new IndexedDBStorageAdapter(),
 });
 
-declare global {
-  interface window {
-    repo: Repo;
-    handle: DocHandle<VoxelGrid>;
+const root = document.getElementById("root")!;
+
+async function main() {
+  let handle: DocHandle<any>;
+  const locationHash = document.location.hash.substring(1);
+  if (isValidAutomergeUrl(locationHash)) {
+    handle = await repo.find(locationHash);
+  } else {
+    handle = repo.create();
+    document.location.hash = handle.url;
   }
-}
-window.repo = repo;
 
-// Check the URL for a document to load
-const locationHash = document.location.hash.substring(1);
-// Depending if we have an AutomergeUrl, either find or create the document
-if (isValidAutomergeUrl(locationHash)) {
-  window.handle = await repo.find(locationHash);
-} else {
-  window.handle = repo.create<VoxelGrid>(initVoxelGrid());
-  document.location.hash = window.handle.url;
+  const socket = io("http://localhost:3000");
+
+  socket.on("connect", () => {
+    console.log("Connected to server");
+    socket.emit("join", handle.url);
+  });
+
+  socket.on("update", (positions) => {
+    console.log("Received positions:", positions);
+    // Handle the received positions here
+  });
+
+  setInterval(() => {
+    // Replace with actual position data
+    const position = { x: Math.random(), y: Math.random(), z: Math.random() };
+    socket.emit("position", { room: handle.url, position });
+  }, 1000);
+
+  ReactDOM.createRoot(root).render(
+    <React.StrictMode>
+      <RepoContext.Provider value={repo}>
+        <App docUrl={handle.url} />
+      </RepoContext.Provider>
+    </React.StrictMode>,
+  );
 }
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <RepoContext.Provider value={repo}>
-      <App docUrl={window.handle.url} />
-    </RepoContext.Provider>
-  </StrictMode>,
-);
+main();

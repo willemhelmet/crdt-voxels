@@ -31,10 +31,8 @@ function App({ docUrl }: { docUrl: AutomergeUrl }) {
           maxPolarAngle={Math.PI / 1.75}
         />
         <Transform docUrl={docUrl} />
-        <axesHelper />
       </Canvas>
     </div>
   );
 }
-
 export default App;
