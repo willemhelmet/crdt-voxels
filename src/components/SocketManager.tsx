@@ -16,7 +16,7 @@ const SocketManager: React.FC<SocketManagerProps> = ({
   setMyId,
 }) => {
   const socketRef = useRef<Socket | null>(null);
-  const { camera, raycaster, scene } = useThree();
+  const { raycaster, scene } = useThree();
   const lastSent = useRef(0);
 
   useEffect(() => {
@@ -31,7 +31,6 @@ const SocketManager: React.FC<SocketManagerProps> = ({
 
     socket.on("update", (positions) => {
       setPositions(positions);
-      console.log(positions);
     });
 
     return () => {
