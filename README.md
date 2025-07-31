@@ -1,5 +1,7 @@
 # 3D Voxel Editor
 
+### **LIVE DEMO COMING SOON (EARLY AUGUST)**
+
 This is a collaborative 3D voxel editor built with React and Three.js. It allows multiple users to edit a shared 3D space in real-time.
 
 ## Features
