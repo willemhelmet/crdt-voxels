@@ -92,11 +92,18 @@ export const Voxel = ({ position, color, name, docUrl }) => {
       z: norm.z + position.z,
     };
     setNewVoxelPos(newPos);
+
+    if (mode === "paint") {
+      e.object.material.color.set(storeColor);
+    }
   }
 
   function onPointerOut(e) {
     e.stopPropagation();
     setShowGhost(false);
+    if (mode === "paint") {
+      e.object.material.color.set(color);
+    }
   }
 
   return (
