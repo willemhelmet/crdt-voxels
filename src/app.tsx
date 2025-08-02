@@ -12,11 +12,12 @@ import { useState, useEffect } from "react";
 import { Player } from "./components/Player.tsx";
 import { SocketManager } from "./components/SocketManager.tsx";
 import { Joystick, VirtualButton } from "bvhecctrl";
+import { useStore } from "./store.ts";
 
 function App({ docUrl }: { docUrl: AutomergeUrl }) {
   const [positions, setPositions] = useState({});
   const [myId, setMyId] = useState<string | null>(null);
-
+  const view = useStore((state) => state.view);
   const [isTouchScreen, setIsTouchScreen] = useState(false);
 
   useEffect(() => {
@@ -32,7 +33,7 @@ function App({ docUrl }: { docUrl: AutomergeUrl }) {
     <div className="App">
       <Stats />
       <UI />
-      {isTouchScreen && (
+      {isTouchScreen && view === "first-person" && (
         <>
           <Joystick />
 
