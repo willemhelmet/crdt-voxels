@@ -25,6 +25,7 @@ export function Player() {
     if (!cameraControls) return;
 
     if (view === "first-person") {
+      cameraControlRef.current?.lockPointer();
       setCameraPosition(camera.position.clone());
       cameraControls.dolly(cameraControls.distance - 0.02, true);
     } else if (view === "editor") {
@@ -61,10 +62,11 @@ export function Player() {
       ecctrlRef.current?.group.position &&
       ecctrlRef.current.group.position.y < -50
     ) {
+      ecctrlRef.current.paused = true;
       ecctrlRef.current.group.position.set(0, 1.2, 0);
+      ecctrlRef.current.paused = false;
     }
   });
-
   return (
     <>
       <CameraControls makeDefault ref={cameraControlRef} />
