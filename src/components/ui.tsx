@@ -4,6 +4,7 @@ import { Brush } from "./brush.tsx";
 import { Dropper } from "./dropper.tsx";
 import { Hand } from "./Hand.tsx";
 import { Pointer } from "./Pointer.tsx";
+import { Play } from "./play.tsx";
 import { useStore } from "../store.ts";
 
 export function UI() {
@@ -19,6 +20,7 @@ export function UI() {
           <Eraser />
           <Brush />
           <Dropper />
+          <Play />
           <input
             type="color"
             value={color}

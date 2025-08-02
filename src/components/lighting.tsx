@@ -1,9 +1,8 @@
-import { Environment, Sky } from "@react-three/drei";
+import { Sky } from "@react-three/drei";
 
 export function Lighting() {
   return (
     <>
-      <Environment preset={"warehouse"} />
       <ambientLight intensity={Math.PI / 2} />
       <spotLight
         position={[10, 10, 10]}

@@ -1,5 +1,6 @@
 import { AutomergeUrl, useDocument } from "@automerge/react";
 import { Voxel } from "./voxel.tsx";
+// import {Instances} from "@react-three/drei"
 
 export interface VoxelData {
   position: { x: number; y: number; z: number };

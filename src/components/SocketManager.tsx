@@ -10,11 +10,11 @@ interface SocketManagerProps {
   setMyId: (id: string) => void;
 }
 
-const SocketManager: React.FC<SocketManagerProps> = ({
+export function SocketManager({
   docUrl,
   setPositions,
   setMyId,
-}) => {
+}: SocketManagerProps) {
   const socketRef = useRef<Socket | null>(null);
   const { raycaster, scene } = useThree();
   const lastSent = useRef(0);
@@ -59,6 +59,4 @@ const SocketManager: React.FC<SocketManagerProps> = ({
   });
 
   return null; // This component doesn't render anything
-};
-
-export default SocketManager;
+}

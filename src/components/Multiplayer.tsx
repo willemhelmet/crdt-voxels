@@ -1,20 +1,17 @@
-import React from "react";
-import Player from "./Player";
+import Cursor from "./Cursor";
 
-interface PlayersProps {
+interface MultiplayerProps {
   positions: { [id: string]: { x: number; y: number; z: number } };
   myId: string | null;
 }
 
-const Players: React.FC<PlayersProps> = ({ positions, myId }) => {
+export function Multiplayer({ positions, myId }: MultiplayerProps) {
   return (
     <>
       {Object.entries(positions).map(([id, { x, y, z }]) => {
         if (id === myId) return null; // Don't render my own player
-        return <Player key={id} position={[x, y, z]} />;
+        return <Cursor key={id} position={[x, y, z]} />;
       })}
     </>
   );
-};
-
-export default Players;
+}

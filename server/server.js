@@ -14,7 +14,7 @@ const io = new Server(server, {
 const rooms = {};
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
+  // console.log("a user connected");
 
   socket.on("join", (room) => {
     socket.join(room);
@@ -34,7 +34,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("user disconnected");
+    // console.log("user disconnected");
     for (const room in rooms) {
       if (rooms[room][socket.id]) {
         delete rooms[room][socket.id];

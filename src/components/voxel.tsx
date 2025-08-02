@@ -3,6 +3,7 @@ import { useDocument } from "@automerge/react";
 import { useState, useRef } from "react";
 import { useStore } from "../store.ts";
 import { Group } from "three";
+import { StaticCollider } from "bvhecctrl";
 
 export const Voxel = ({ position, color, name, docUrl }) => {
   const [newVoxelPos, setNewVoxelPos] = useState({ x: 0, y: 0, z: 0 });
@@ -33,7 +34,6 @@ export const Voxel = ({ position, color, name, docUrl }) => {
         }),
       );
     } else if (mode === "erase") {
-      const position = e.object.parent.position;
       changeDoc((d) => {
         const indexToRemove = d.voxels.findIndex(
           (v) =>
@@ -49,7 +49,6 @@ export const Voxel = ({ position, color, name, docUrl }) => {
         }
       });
     } else if (mode === "paint") {
-      const position = e.object.parent.position;
       changeDoc((d) => {
         const indexToEdit = d.voxels.findIndex(
           (v) =>
@@ -66,7 +65,6 @@ export const Voxel = ({ position, color, name, docUrl }) => {
       setColor(hexColor);
     } else if (mode === "select") {
       setSelected(ref.current);
-      const position = e.object.parent.position;
       const index = doc.voxels.findIndex(
         (v) =>
           v.position.x === position.x &&
@@ -104,17 +102,19 @@ export const Voxel = ({ position, color, name, docUrl }) => {
 
   return (
     <group ref={ref} position={[position.x, position.y, position.z]}>
-      <Box
-        args={[1, 1, 1]}
-        onPointerDown={onClick}
-        onPointerMove={onHover}
-        onPointerOut={onPointerOut}
-        name={name}
-        castShadow
-        receiveShadow
-      >
-        <meshStandardMaterial metalness={0} roughness={1} color={color} />
-      </Box>
+      <StaticCollider>
+        <Box
+          args={[1, 1, 1]}
+          onPointerDown={onClick}
+          onPointerMove={onHover}
+          onPointerOut={onPointerOut}
+          name={name}
+          castShadow
+          receiveShadow
+        >
+          <meshStandardMaterial metalness={0} roughness={1} color={color} />
+        </Box>
+      </StaticCollider>
       {showGhost && mode == "add" && (
         <mesh position={ghostOffset}>
           <boxGeometry args={[1, 1, 1]} />
