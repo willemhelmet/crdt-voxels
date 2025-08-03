@@ -1,7 +1,7 @@
 import "./App.css";
 import { Canvas } from "@react-three/fiber";
 import { Grid, Stats } from "@react-three/drei";
-import { AutomergeUrl } from "@automerge/react";
+import { type AutomergeUrl } from "@automerge/react";
 
 import { Lighting } from "./components/lighting.tsx";
 import { UI } from "./components/ui.tsx";
@@ -15,7 +15,7 @@ import { Joystick, VirtualButton } from "bvhecctrl";
 import { useStore } from "./store.ts";
 
 function App({ docUrl }: { docUrl: AutomergeUrl }) {
-  const view = useStore((state) => state.view);
+  const view = useStore((state) => state.myView);
   const [isTouchScreen, setIsTouchScreen] = useState(false);
 
   useEffect(() => {

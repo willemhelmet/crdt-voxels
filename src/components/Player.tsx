@@ -1,5 +1,5 @@
 import { CameraControls, KeyboardControls } from "@react-three/drei";
-import BVHEcctrl from "bvhecctrl";
+import BVHEcctrl, { type BVHEcctrlApi } from "bvhecctrl";
 import { useEffect, useRef } from "react";
 import { useStore } from "../store.ts";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -18,15 +18,15 @@ export function Player() {
   const myView = useStore((state) => state.myView);
   const setMyCameraPosition = useStore((state) => state.setMyCameraPosition);
   const setMyRotation = useStore((state) => state.setMyRotation);
-  const cameraControlRef = useRef();
-  const ecctrlRef = useRef();
+  const cameraControlRef = useRef<CameraControls>(null);
+  const ecctrlRef = useRef<BVHEcctrlApi>(null);
 
   useEffect(() => {
     const cameraControls = cameraControlRef.current;
     if (!cameraControls) return;
 
     if (myView === "first-person") {
-      cameraControlRef.current?.lockPointer();
+      cameraControls.lockPointer();
       setMyCameraPosition(camera.position.clone());
       cameraControls.dolly(cameraControls.distance - 0.02, true);
     } else if (myView === "editor") {
@@ -67,12 +67,10 @@ export function Player() {
     }
     // Save player when they fall off the edge
     if (
-      ecctrlRef.current?.group.position &&
-      ecctrlRef.current.group.position.y < -50
+      ecctrlRef.current?.group?.position &&
+      ecctrlRef.current.group.position.y < -20
     ) {
-      ecctrlRef.current.paused = true;
       ecctrlRef.current.group.position.set(0, 1.2, 0);
-      ecctrlRef.current.paused = false;
     }
   });
   return (

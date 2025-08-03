@@ -1,4 +1,4 @@
-import React, { SVGProps } from "react";
+import type { SVGProps } from "react";
 
 export function MaterialSymbolsDropperEye(props: SVGProps<SVGSVGElement>) {
   return (

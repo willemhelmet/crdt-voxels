@@ -1,4 +1,4 @@
-import React, { SVGProps } from "react";
+import type { SVGProps } from "react";
 
 export function MaterialSymbolsFormatPaintOutline(
   props: SVGProps<SVGSVGElement>,

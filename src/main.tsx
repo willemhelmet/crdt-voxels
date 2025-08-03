@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
+import App from "./app.tsx";
 import "./index.css";
 import {
   DocHandle,
@@ -10,7 +10,7 @@ import {
   IndexedDBStorageAdapter,
   WebSocketClientAdapter,
 } from "@automerge/react";
-import { VoxelGrid, initVoxelGrid } from "./components/voxels.tsx";
+import { type VoxelGrid, initVoxelGrid } from "./components/voxels.tsx";
 
 const repo = new Repo({
   network: [new WebSocketClientAdapter("wss://sync.automerge.org")],

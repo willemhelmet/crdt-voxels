@@ -1,4 +1,4 @@
-import { AutomergeUrl, useDocument } from "@automerge/react";
+import { type AutomergeUrl, useDocument } from "@automerge/react";
 import { Voxel } from "./voxel.tsx";
 // import {Instances} from "@react-three/drei"
 
@@ -39,7 +39,7 @@ export const Voxels: React.FC<{ docUrl: AutomergeUrl }> = ({ docUrl }) => {
   return (
     <>
       {doc &&
-        doc.voxels?.map(({ position, color }, index) => (
+        (doc as any).voxels?.map(({ position, color }: any, index: number) => (
           <Voxel
             position={position}
             color={color}

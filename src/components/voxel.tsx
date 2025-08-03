@@ -1,11 +1,18 @@
 import { Box } from "@react-three/drei";
-import { useDocument } from "@automerge/react";
+import { type AutomergeUrl, useDocument } from "@automerge/react";
 import { useState, useRef } from "react";
 import { useStore } from "../store.ts";
 import { Group } from "three";
 import { StaticCollider } from "bvhecctrl";
 
-export const Voxel = ({ position, color, name, docUrl }) => {
+interface VoxelProps {
+  position: { x: number; y: number; z: number };
+  color: string;
+  name: string;
+  docUrl: AutomergeUrl;
+}
+
+export const Voxel = ({ position, color, name, docUrl }: VoxelProps) => {
   const [newVoxelPos, setNewVoxelPos] = useState({ x: 0, y: 0, z: 0 });
   const [ghostOffset, setGhostOffset] = useState([0, 0, 0]);
   const [showGhost, setShowGhost] = useState(false);
@@ -22,19 +29,19 @@ export const Voxel = ({ position, color, name, docUrl }) => {
   });
   const myMode = useStore((state) => state.myMode);
 
-  function onClick(e) {
+  function onClick(e: any) {
     e.stopPropagation();
     if (myMode === "add") {
-      changeDoc((d) =>
+      changeDoc((d: any) =>
         d.voxels.push({
           position: newVoxelPos,
           color: myColor,
         }),
       );
     } else if (myMode === "erase") {
-      changeDoc((d) => {
+      changeDoc((d: any) => {
         const indexToRemove = d.voxels.findIndex(
-          (v) =>
+          (v: any) =>
             v.position.x === position.x &&
             v.position.y === position.y &&
             v.position.z === position.z,
@@ -47,9 +54,9 @@ export const Voxel = ({ position, color, name, docUrl }) => {
         }
       });
     } else if (myMode === "paint") {
-      changeDoc((d) => {
+      changeDoc((d: any) => {
         const indexToEdit = d.voxels.findIndex(
-          (v) =>
+          (v: any) =>
             v.position.x === position.x &&
             v.position.y === position.y &&
             v.position.z === position.z,
@@ -63,8 +70,8 @@ export const Voxel = ({ position, color, name, docUrl }) => {
       setMyColor(hexColor);
     } else if (myMode === "select") {
       setMySelected(ref.current);
-      const index = doc.voxels.findIndex(
-        (v) =>
+      const index = (doc as any).voxels.findIndex(
+        (v: any) =>
           v.position.x === position.x &&
           v.position.y === position.y &&
           v.position.z === position.z,
@@ -75,7 +82,7 @@ export const Voxel = ({ position, color, name, docUrl }) => {
     }
   }
 
-  function onHover(e) {
+  function onHover(e: any) {
     e.stopPropagation();
     const norm = e.face.normal;
 
@@ -97,7 +104,7 @@ export const Voxel = ({ position, color, name, docUrl }) => {
     }
   }
 
-  function onPointerOut(e) {
+  function onPointerOut(e: any) {
     e.stopPropagation();
     setShowGhost(false);
     if (myMode === "paint") {
@@ -121,7 +128,7 @@ export const Voxel = ({ position, color, name, docUrl }) => {
         </Box>
       </StaticCollider>
       {showGhost && myMode == "add" && (
-        <mesh position={ghostOffset}>
+        <mesh position={ghostOffset as [number, number, number]}>
           <boxGeometry args={[1, 1, 1]} />
           <meshBasicMaterial color="white" transparent opacity={0.3} />
         </mesh>
