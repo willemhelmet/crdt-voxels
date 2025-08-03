@@ -15,8 +15,6 @@ import { Joystick, VirtualButton } from "bvhecctrl";
 import { useStore } from "./store.ts";
 
 function App({ docUrl }: { docUrl: AutomergeUrl }) {
-  const [positions, setPositions] = useState({});
-  const [myId, setMyId] = useState<string | null>(null);
   const view = useStore((state) => state.view);
   const [isTouchScreen, setIsTouchScreen] = useState(false);
 
@@ -53,11 +51,7 @@ function App({ docUrl }: { docUrl: AutomergeUrl }) {
       <Canvas shadows className="webgl" camera={{ position: [5, 5, 5] }}>
         <Lighting />
 
-        <SocketManager
-          docUrl={docUrl}
-          setPositions={setPositions}
-          setMyId={setMyId}
-        />
+        <SocketManager docUrl={docUrl} />
 
         <Grid
           args={[10, 10]}
@@ -68,7 +62,7 @@ function App({ docUrl }: { docUrl: AutomergeUrl }) {
 
         <Voxels docUrl={docUrl} />
 
-        <Multiplayer positions={positions} myId={myId} />
+        <Multiplayer />
 
         <TransformControlsWrapper docUrl={docUrl} />
 

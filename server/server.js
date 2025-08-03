@@ -21,14 +21,36 @@ io.on("connection", (socket) => {
     if (!rooms[room]) {
       rooms[room] = {};
     }
-    rooms[room][socket.id] = { x: 0, y: 0, z: 0 };
+    rooms[room][socket.id] = {
+      position: { x: 0, y: 0, z: 0 },
+      view: "editor",
+      color: "#ff0000",
+    };
     io.to(room).emit("update", rooms[room]);
   });
 
   socket.on("position", (data) => {
     const { room, position } = data;
     if (rooms[room] && rooms[room][socket.id]) {
-      rooms[room][socket.id] = position;
+      rooms[room][socket.id].position = position;
+      io.to(room).emit("update", rooms[room]);
+    }
+  });
+
+  socket.on("viewChange", (data) => {
+    const { room, view } = data;
+    console.log("view change", view);
+    if (rooms[room] && rooms[room][socket.id]) {
+      rooms[room][socket.id].view = view;
+      io.to(room).emit("update", rooms[room]);
+    }
+  });
+
+  socket.on("colorChange", (data) => {
+    const { room, color } = data;
+    console.log("color change", color);
+    if (rooms[room] && rooms[room][socket.id]) {
+      rooms[room][socket.id].color = color;
       io.to(room).emit("update", rooms[room]);
     }
   });

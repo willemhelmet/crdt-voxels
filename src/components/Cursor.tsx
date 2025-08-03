@@ -4,9 +4,10 @@ import * as THREE from "three";
 
 interface CursorProps {
   position: [number, number, number];
+  color: string;
 }
 
-const Cursor: React.FC<CursorProps> = ({ position }) => {
+const Cursor: React.FC<CursorProps> = ({ position, color }) => {
   const ref = useRef<THREE.Mesh>(null!);
 
   useFrame(() => {
@@ -18,7 +19,7 @@ const Cursor: React.FC<CursorProps> = ({ position }) => {
   return (
     <mesh ref={ref}>
       <sphereGeometry args={[0.1, 16, 16]} />
-      <meshStandardMaterial color="red" />
+      <meshStandardMaterial color={color} />
     </mesh>
   );
 };

@@ -44,6 +44,10 @@ export function Player() {
   }, [view, camera, setCameraPosition]);
 
   useFrame(() => {
+    if (view === "first-person") {
+      setCameraPosition(camera.position.clone());
+    }
+
     if (cameraControlRef.current && ecctrlRef.current) {
       // For camera control to follow character
       if (view === "first-person" && ecctrlRef.current.group)
@@ -58,6 +62,7 @@ export function Player() {
         ecctrlRef.current.model.visible =
           cameraControlRef.current.distance > 0.7;
     }
+    // Save player when they fall off the edge
     if (
       ecctrlRef.current?.group.position &&
       ecctrlRef.current.group.position.y < -50
