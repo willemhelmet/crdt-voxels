@@ -9,30 +9,29 @@ export const Voxel = ({ position, color, name, docUrl }) => {
   const [newVoxelPos, setNewVoxelPos] = useState({ x: 0, y: 0, z: 0 });
   const [ghostOffset, setGhostOffset] = useState([0, 0, 0]);
   const [showGhost, setShowGhost] = useState(false);
-  const storeColor = useStore((state) => state.color);
-  const setColor = useStore((state) => state.setColor);
-  const selected = useStore((state) => state.selected);
-  const setSelected = useStore((state) => state.setSelected);
-  const setSelectedIndex = useStore((state) => state.setSelectedIndex);
+  const myColor = useStore((state) => state.myColor);
+  const setMyColor = useStore((state) => state.setMyColor);
+  const mySelected = useStore((state) => state.mySelected);
+  const setMySelected = useStore((state) => state.setMySelected);
+  const setMySelectedIndex = useStore((state) => state.setMySelectedIndex);
   const ref = useRef<Group>(null!);
-
   const [doc, changeDoc] = useDocument(docUrl, {
     // This hooks the `useDocument` into reacts suspense infrastructure so the whole component
     // only renderes once the document is loaded
     suspense: true,
   });
-  const mode = useStore((state) => state.mode);
+  const myMode = useStore((state) => state.myMode);
 
   function onClick(e) {
     e.stopPropagation();
-    if (mode === "add") {
+    if (myMode === "add") {
       changeDoc((d) =>
         d.voxels.push({
           position: newVoxelPos,
-          color: storeColor,
+          color: myColor,
         }),
       );
-    } else if (mode === "erase") {
+    } else if (myMode === "erase") {
       changeDoc((d) => {
         const indexToRemove = d.voxels.findIndex(
           (v) =>
@@ -42,12 +41,12 @@ export const Voxel = ({ position, color, name, docUrl }) => {
         );
         if (indexToRemove !== -1) {
           d.voxels.splice(indexToRemove, 1);
-          if (selected) {
-            setSelected(null);
+          if (mySelected) {
+            setMySelected(null);
           }
         }
       });
-    } else if (mode === "paint") {
+    } else if (myMode === "paint") {
       changeDoc((d) => {
         const indexToEdit = d.voxels.findIndex(
           (v) =>
@@ -56,22 +55,22 @@ export const Voxel = ({ position, color, name, docUrl }) => {
             v.position.z === position.z,
         );
         if (indexToEdit !== -1) {
-          d.voxels[indexToEdit].color = storeColor;
+          d.voxels[indexToEdit].color = myColor;
         }
       });
-    } else if (mode === "dropper") {
+    } else if (myMode === "dropper") {
       const hexColor = "#" + e.object.material.color.getHexString();
-      setColor(hexColor);
-    } else if (mode === "select") {
-      setSelected(ref.current);
+      setMyColor(hexColor);
+    } else if (myMode === "select") {
+      setMySelected(ref.current);
       const index = doc.voxels.findIndex(
         (v) =>
           v.position.x === position.x &&
           v.position.y === position.y &&
           v.position.z === position.z,
       );
-      setSelectedIndex(index);
-    } else if (mode === "move") {
+      setMySelectedIndex(index);
+    } else if (myMode === "move") {
       // TODO: Implement move mode logic
     }
   }
@@ -93,16 +92,16 @@ export const Voxel = ({ position, color, name, docUrl }) => {
     };
     setNewVoxelPos(newPos);
 
-    if (mode === "paint") {
-      e.object.material.color.set(storeColor);
+    if (myMode === "paint") {
+      e.object.material.color.set(myColor);
     }
   }
 
   function onPointerOut(e) {
     e.stopPropagation();
     setShowGhost(false);
-    if (mode === "paint") {
-      e.object.material.color.set(color);
+    if (myMode === "paint") {
+      e.object.material.color.set(myColor);
     }
   }
 
@@ -121,7 +120,7 @@ export const Voxel = ({ position, color, name, docUrl }) => {
           <meshStandardMaterial metalness={0} roughness={1} color={color} />
         </Box>
       </StaticCollider>
-      {showGhost && mode == "add" && (
+      {showGhost && myMode == "add" && (
         <mesh position={ghostOffset}>
           <boxGeometry args={[1, 1, 1]} />
           <meshBasicMaterial color="white" transparent opacity={0.3} />

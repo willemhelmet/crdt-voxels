@@ -8,8 +8,8 @@ import { Play } from "./play.tsx";
 import { useStore } from "../store.ts";
 
 export function UI() {
-  const color = useStore((state) => state.color);
-  const setColor = useStore((state) => state.setColor);
+  const myColor = useStore((state) => state.myColor);
+  const setMyColor = useStore((state) => state.setMyColor);
   return (
     <>
       <div className={"ui"}>
@@ -23,8 +23,8 @@ export function UI() {
           <Play />
           <input
             type="color"
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
+            value={myColor}
+            onChange={(e) => setMyColor(e.target.value)}
             style={{ width: "2em", height: "2em", borderRadius: "1em" }}
           />
         </div>

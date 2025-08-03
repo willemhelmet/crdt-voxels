@@ -3,20 +3,20 @@ import { MaterialSymbolsPlayCircleOutlineRounded } from "./icons/MaterialSymbols
 import { useStore } from "../store.ts";
 
 export function Play() {
-  const view = useStore((state) => state.view);
-  const setView = useStore((state) => state.setView);
+  const myView = useStore((state) => state.myView);
+  const setMyView = useStore((state) => state.setMyView);
 
   const toggleView = () => {
-    setView(view === "editor" ? "first-person" : "editor");
+    setMyView(myView === "editor" ? "first-person" : "editor");
   };
 
   return (
     <div onClick={toggleView}>
       <div
         className={`icon-wrapper ${
-          view === "first-person" ? "active-icon" : ""
+          myView === "first-person" ? "active-icon" : ""
         }`}>
-        {view === "first-person" ? (
+        {myView === "first-person" ? (
           <MaterialSymbolsPlayCircleRounded />
         ) : (
           <MaterialSymbolsPlayCircleOutlineRounded />

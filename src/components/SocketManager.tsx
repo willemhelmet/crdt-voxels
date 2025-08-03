@@ -14,9 +14,10 @@ export function SocketManager({ docUrl }: SocketManagerProps) {
   const setPositions = useStore((state) => state.setPositions);
   const myId = useStore((state) => state.myId);
   const setMyId = useStore((state) => state.setMyId);
-  const view = useStore((state) => state.view);
-  const cameraPosition = useStore((state) => state.cameraPosition);
-  const color = useStore((state) => state.color);
+  const myView = useStore((state) => state.myView);
+  const myCameraPosition = useStore((state) => state.myCameraPosition);
+  const myColor = useStore((state) => state.myColor);
+  const myRotation = useStore((state) => state.myRotation);
 
   useEffect(() => {
     const socket = io("http://localhost:3000");
@@ -44,29 +45,30 @@ export function SocketManager({ docUrl }: SocketManagerProps) {
   // Send view changes to the server
   useEffect(() => {
     if (socketRef.current && myId) {
-      socketRef.current.emit("viewChange", { room: docUrl, view });
+      socketRef.current.emit("viewChange", { room: docUrl, view: myView });
     }
-  }, [view, docUrl, myId]);
+  }, [myView, docUrl, myId]);
 
   // Send color changes to the server
   useEffect(() => {
     if (socketRef.current && myId) {
-      socketRef.current.emit("colorChange", { room: docUrl, color });
+      socketRef.current.emit("colorChange", { room: docUrl, color: myColor });
     }
-  }, [color, docUrl, myId]);
+  }, [myColor, docUrl, myId]);
 
   useFrame((_, delta) => {
     lastSent.current += delta;
     if (socketRef.current && lastSent.current > 1 / 60) {
       // Send at 60fps
-      if (view === "first-person" && cameraPosition) {
+      if (myView === "first-person" && myCameraPosition) {
         socketRef.current.emit("position", {
           room: docUrl,
           position: {
-            x: cameraPosition.x,
-            y: cameraPosition.y,
-            z: cameraPosition.z,
+            x: myCameraPosition.x,
+            y: myCameraPosition.y,
+            z: myCameraPosition.z,
           },
+          rotation: myRotation,
         });
       } else {
         const intersects = raycaster.intersectObjects(scene.children, true);
@@ -75,6 +77,8 @@ export function SocketManager({ docUrl }: SocketManagerProps) {
           socketRef.current.emit("position", {
             room: docUrl,
             position: { x, y, z },
+            rotation: 0, // No rotation in editor mode
+            view: myView,
           });
         }
       }

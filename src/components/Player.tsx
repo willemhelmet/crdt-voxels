@@ -15,8 +15,9 @@ const keyboardMap = [
 
 export function Player() {
   const { camera } = useThree();
-  const view = useStore((state) => state.view);
-  const setCameraPosition = useStore((state) => state.setCameraPosition);
+  const myView = useStore((state) => state.myView);
+  const setMyCameraPosition = useStore((state) => state.setMyCameraPosition);
+  const setMyRotation = useStore((state) => state.setMyRotation);
   const cameraControlRef = useRef();
   const ecctrlRef = useRef();
 
@@ -24,33 +25,35 @@ export function Player() {
     const cameraControls = cameraControlRef.current;
     if (!cameraControls) return;
 
-    if (view === "first-person") {
+    if (myView === "first-person") {
       cameraControlRef.current?.lockPointer();
-      setCameraPosition(camera.position.clone());
+      setMyCameraPosition(camera.position.clone());
       cameraControls.dolly(cameraControls.distance - 0.02, true);
-    } else if (view === "editor") {
-      const { cameraPosition } = useStore.getState();
-      if (cameraPosition) {
+    } else if (myView === "editor") {
+      const { myCameraPosition } = useStore.getState();
+      if (myCameraPosition) {
         cameraControls.setPosition(
-          cameraPosition.x,
-          cameraPosition.y,
-          cameraPosition.z,
+          myCameraPosition.x,
+          myCameraPosition.y,
+          myCameraPosition.z,
           true,
         );
         cameraControls.setTarget(0, 0, 0, true);
-        setCameraPosition(null);
+        setMyCameraPosition(null);
       }
     }
-  }, [view, camera, setCameraPosition]);
+  }, [myView, camera, setMyCameraPosition]);
 
   useFrame(() => {
-    if (view === "first-person") {
-      setCameraPosition(camera.position.clone());
+    if (myView === "first-person") {
+      setMyCameraPosition(camera.position.clone());
+      const yRotation = camera.rotation.y;
+      setMyRotation(yRotation);
     }
 
     if (cameraControlRef.current && ecctrlRef.current) {
       // For camera control to follow character
-      if (view === "first-person" && ecctrlRef.current.group)
+      if (myView === "first-person" && ecctrlRef.current.group)
         cameraControlRef.current.moveTo(
           ecctrlRef.current.group.position.x,
           ecctrlRef.current.group.position.y + 0.3,

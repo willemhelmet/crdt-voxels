@@ -3,13 +3,13 @@ import { MaterialSymbolsEditOutlineSharp } from "./icons/MaterialSymbolsEditOutl
 import { useStore } from "../store.ts";
 
 export function Pencil() {
-  const mode = useStore((state) => state.mode);
-  const setMode = useStore((state) => state.setMode);
+  const myMode = useStore((state) => state.myMode);
+  const setMyMode = useStore((state) => state.setMyMode);
 
   return (
-    <div onClick={() => setMode("add")}>
-      <div className={`icon-wrapper ${mode === "add" ? "active-icon" : ""}`}>
-        {mode === "add" ? (
+    <div onClick={() => setMyMode("add")}>
+      <div className={`icon-wrapper ${myMode === "add" ? "active-icon" : ""}`}>
+        {myMode === "add" ? (
           <MaterialSymbolsEditSharp />
         ) : (
           <MaterialSymbolsEditOutlineSharp />

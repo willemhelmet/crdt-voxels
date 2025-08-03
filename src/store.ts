@@ -5,50 +5,56 @@ type Mode = "add" | "erase" | "paint" | "dropper" | "select" | "move";
 type View = "editor" | "first-person";
 
 interface AppState {
-  mode: Mode;
-  view: View;
-  color: string;
-  selected: Object3D | null;
-  selectedIndex: number | null;
-  cameraPosition: Vector3 | null;
+  myMode: Mode;
+  myView: View;
+  myColor: string;
+  mySelected: Object3D | null;
+  mySelectedIndex: number | null;
+  myCameraPosition: Vector3 | null;
+  myRotation: number;
   positions: {
     [id: string]: {
       position: { x: number; y: number; z: number };
       view: View;
       color: string;
+      rotation: number;
     };
   };
   myId: string | null;
-  setMode: (mode: Mode) => void;
-  setView: (view: View) => void;
-  setColor: (color: string) => void;
-  setSelected: (selected: Object3D | null) => void;
-  setSelectedIndex: (selectedIndex: number | null) => void;
-  setCameraPosition: (cameraPosition: Vector3 | null) => void;
+  setMyMode: (mode: Mode) => void;
+  setMyView: (view: View) => void;
+  setMyColor: (color: string) => void;
+  setMySelected: (selected: Object3D | null) => void;
+  setMySelectedIndex: (selectedIndex: number | null) => void;
+  setMyCameraPosition: (cameraPosition: Vector3 | null) => void;
+  setMyRotation: (rotation: number) => void;
   setPositions: (positions: {
     [id: string]: {
       position: { x: number; y: number; z: number };
       view: View;
       color: string;
+      rotation: number;
     };
   }) => void;
   setMyId: (myId: string | null) => void;
 }
 export const useStore = create<AppState>((set) => ({
-  mode: "move",
-  view: "editor",
-  color: "#ff0000",
-  selected: null,
-  selectedIndex: null,
-  cameraPosition: null,
+  myMode: "move",
+  myView: "editor",
+  myColor: "#ff0000",
+  mySelected: null,
+  mySelectedIndex: null,
+  myCameraPosition: null,
+  myRotation: 0,
   positions: {},
   myId: null,
-  setMode: (mode) => set({ mode }),
-  setView: (view) => set({ view }),
-  setColor: (color) => set({ color }),
-  setSelected: (selected) => set({ selected }),
-  setSelectedIndex: (selectedIndex) => set({ selectedIndex }),
-  setCameraPosition: (cameraPosition) => set({ cameraPosition }),
+  setMyMode: (myMode) => set({ myMode }),
+  setMyView: (myView) => set({ myView }),
+  setMyColor: (myColor) => set({ myColor }),
+  setMySelected: (mySelected) => set({ mySelected }),
+  setMySelectedIndex: (mySelectedIndex) => set({ mySelectedIndex }),
+  setMyCameraPosition: (myCameraPosition) => set({ myCameraPosition }),
+  setMyRotation: (myRotation) => set({ myRotation }),
   setPositions: (positions) => set({ positions }),
   setMyId: (myId) => set({ myId }),
 }));

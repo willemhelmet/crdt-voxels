@@ -3,13 +3,15 @@ import { MdiCursorDefaultClickOutline } from "./icons/MdiCursorDefaultClickOutli
 import { useStore } from "../store.ts";
 
 export function Pointer() {
-  const mode = useStore((state) => state.mode);
-  const setMode = useStore((state) => state.setMode);
+  const myMode = useStore((state) => state.myMode);
+  const setMyMode = useStore((state) => state.setMyMode);
 
   return (
-    <div onClick={() => setMode("select")}>
-      <div className={`icon-wrapper ${mode === "select" ? "active-icon" : ""}`}>
-        {mode === "select" ? (
+    <div onClick={() => setMyMode("select")}>
+      <div
+        className={`icon-wrapper ${myMode === "select" ? "active-icon" : ""}`}
+      >
+        {myMode === "select" ? (
           <MdiCursorDefaultClick />
         ) : (
           <MdiCursorDefaultClickOutline />

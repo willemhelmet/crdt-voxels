@@ -3,13 +3,13 @@ import { MaterialSymbolsBackHandOutline } from "./icons/MaterialSymbolsBackHandO
 import { useStore } from "../store.ts";
 
 export function Hand() {
-  const mode = useStore((state) => state.mode);
-  const setMode = useStore((state) => state.setMode);
+  const myMode = useStore((state) => state.myMode);
+  const setMyMode = useStore((state) => state.setMyMode);
 
   return (
-    <div onClick={() => setMode("move")}>
-      <div className={`icon-wrapper ${mode === "move" ? "active-icon" : ""}`}>
-        {mode === "move" ? (
+    <div onClick={() => setMyMode("move")}>
+      <div className={`icon-wrapper ${myMode === "move" ? "active-icon" : ""}`}>
+        {myMode === "move" ? (
           <MaterialSymbolsBackHand />
         ) : (
           <MaterialSymbolsBackHandOutline />

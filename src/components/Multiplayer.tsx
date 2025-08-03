@@ -8,27 +8,31 @@ export function Multiplayer() {
 
   return (
     <>
-      {Object.entries(positions).map(([id, { position, view, color }]) => {
-        if (id === myId || !position) return null; // Don't render my own player or if position is missing
+      {Object.entries(positions).map(
+        ([id, { position, view, color, rotation }]) => {
+          if (id === myId || !position) return null; // Don't render my own player or if position is missing
 
-        if (view === "first-person") {
+          if (view === "first-person") {
+            return (
+              <PlayerAvatar
+                key={id}
+                position={[position.x, position.y, position.z]}
+                color={color}
+                rotation={rotation}
+              />
+            );
+          }
+
           return (
-            <PlayerAvatar
+            <Cursor
               key={id}
               position={[position.x, position.y, position.z]}
               color={color}
+              rotation={rotation}
             />
           );
-        }
-
-        return (
-          <Cursor
-            key={id}
-            position={[position.x, position.y, position.z]}
-            color={color}
-          />
-        );
-      })}
+        },
+      )}
     </>
   );
 }

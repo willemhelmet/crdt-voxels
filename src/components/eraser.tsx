@@ -3,13 +3,13 @@ import { MaterialSymbolsInkEraserOutline } from "./icons/MaterialSymbolsInkErase
 import { useStore } from "../store.ts";
 
 export function Eraser() {
-  const mode = useStore((state) => state.mode);
-  const setMode = useStore((state) => state.setMode);
+  const myMode = useStore((state) => state.myMode);
+  const setMyMode = useStore((state) => state.setMyMode);
 
   return (
-    <div onClick={() => setMode("erase")}>
-      <div className={`icon-wrapper ${mode === "erase" ? "active-icon" : ""}`}>
-        {mode === "erase" ? (
+    <div onClick={() => setMyMode("erase")}>
+      <div className={`icon-wrapper ${myMode === "erase" ? "active-icon" : ""}`}>
+        {myMode === "erase" ? (
           <MaterialSymbolsInkEraser />
         ) : (
           <MaterialSymbolsInkEraserOutline />

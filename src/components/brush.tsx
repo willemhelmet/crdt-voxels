@@ -3,12 +3,12 @@ import { MaterialSymbolsFormatPaintOutline } from "./icons/MaterialSymbolsFormat
 import { useStore } from "../store.ts";
 
 export function Brush() {
-  const mode = useStore((state) => state.mode);
-  const setMode = useStore((state) => state.setMode);
+  const myMode = useStore((state) => state.myMode);
+  const setMyMode = useStore((state) => state.setMyMode);
   return (
-    <div onClick={() => setMode("paint")}>
-      <div className={`icon-wrapper ${mode === "paint" ? "active-icon" : ""}`}>
-        {mode === "paint" ? (
+    <div onClick={() => setMyMode("paint")}>
+      <div className={`icon-wrapper ${myMode === "paint" ? "active-icon" : ""}`}>
+        {myMode === "paint" ? (
           <MaterialSymbolsFormatPaint />
         ) : (
           <MaterialSymbolsFormatPaintOutline />

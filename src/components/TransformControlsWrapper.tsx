@@ -5,9 +5,9 @@ import { Vector3 } from "three";
 import { useDocument } from "@automerge/react";
 
 export function TransformControlsWrapper({ docUrl }) {
-  const mode = useStore((state) => state.mode);
-  const selected = useStore((state) => state.selected);
-  const selectedIndex = useStore((state) => state.selectedIndex);
+  const myMode = useStore((state) => state.myMode);
+  const mySelected = useStore((state) => state.mySelected);
+  const mySelectedIndex = useStore((state) => state.mySelectedIndex);
 
   const originalPos = useRef<Vector3>();
   const [, changeDoc] = useDocument(docUrl, {
@@ -18,25 +18,25 @@ export function TransformControlsWrapper({ docUrl }) {
 
   function mouseDown() {
     // console.log("down");
-    originalPos.current = selected.position;
+    originalPos.current = mySelected.position;
   }
 
   function mouseUp() {
     // console.log("up");
     if (originalPos.current) {
       changeDoc((d) => {
-        d.voxels[selectedIndex].position = selected.position;
+        d.voxels[mySelectedIndex].position = mySelected.position;
       });
     }
   }
 
-  if (!selected || mode !== "select") {
+  if (!mySelected || myMode !== "select") {
     return null;
   }
 
   return (
     <TransformControls
-      object={selected}
+      object={mySelected}
       translationSnap={1}
       onMouseDown={mouseDown}
       onMouseUp={mouseUp}

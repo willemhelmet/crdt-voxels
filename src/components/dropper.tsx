@@ -3,15 +3,15 @@ import { MaterialSymbolsDropperEyeOutline } from "./icons/MaterialSymbolsDropper
 import { useStore } from "../store.ts";
 
 export function Dropper() {
-  const mode = useStore((state) => state.mode);
-  const setMode = useStore((state) => state.setMode);
+  const myMode = useStore((state) => state.myMode);
+  const setMyMode = useStore((state) => state.setMyMode);
 
   return (
-    <div onClick={() => setMode("dropper")}>
+    <div onClick={() => setMyMode("dropper")}>
       <div
-        className={`icon-wrapper ${mode === "dropper" ? "active-icon" : ""}`}
+        className={`icon-wrapper ${myMode === "dropper" ? "active-icon" : ""}`}
       >
-        {mode === "dropper" ? (
+        {myMode === "dropper" ? (
           <MaterialSymbolsDropperEye />
         ) : (
           <MaterialSymbolsDropperEyeOutline />
