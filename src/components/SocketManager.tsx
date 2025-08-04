@@ -20,7 +20,7 @@ export function SocketManager({ docUrl }: SocketManagerProps) {
   const myRotation = useStore((state) => state.myRotation);
 
   useEffect(() => {
-    const socket = io("http://localhost:3000");
+    const socket = io("https://crdtvoxels.rcdis.co");
     socketRef.current = socket;
 
     socket.on("connect", () => {
